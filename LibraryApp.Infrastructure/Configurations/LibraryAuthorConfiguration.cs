@@ -1,0 +1,22 @@
+﻿using LibraryApp.Shared.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace LibraryApp.Infrastructure.Configurations
+{
+    public class LibraryAuthorConfiguration : IEntityTypeConfiguration<LibraryAuthor>
+    {
+        public void Configure(EntityTypeBuilder<LibraryAuthor> builder)
+        {
+            builder.HasKey(la => new { la.LibraryAuthorId });
+
+            builder.HasOne(la => la.Library)
+                .WithMany(l => l.LibraryAuthors)
+                .HasForeignKey(la => la.LibraryId);
+
+            builder.HasOne(la => la.Author)
+                .WithMany(a => a.LibraryAuthors)
+                .HasForeignKey(la => la.AuthorId);
+        }
+    }
+}
